@@ -1,0 +1,4 @@
+config/config.json
+output
+.vscode
+*.log
