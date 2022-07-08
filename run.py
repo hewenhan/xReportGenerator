@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 # pip3 install gitpython
-from distutils.command.config import config
 from libs.log import printLog
 from git import Repo
 import shutil, os, datetime, json
