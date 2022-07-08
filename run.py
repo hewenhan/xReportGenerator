@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 
 # pip3 install gitpython
-from cgitb import reset
 from distutils.command.config import config
-from unittest import result
 from libs.log import printLog
 from git import Repo
 import shutil, os, datetime, json
