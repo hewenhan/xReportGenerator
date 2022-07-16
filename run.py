@@ -56,8 +56,11 @@ def getRemoteBranchNameByCommitFirstTime(commit):
 def getGitCommitTextByDateRange(repo, branches, repoName = ''):
 	printLog(f'reading {repoName} commits')
 	result = ''
+	if len(branches) == 0:
+		return result
 
 	commits = list(repo.iter_commits(branches, since=config['afterDate'], committer=config['committerName']))
+	commits.reverse()
 	for commit in commits:
 		result += f'{repoName} {getRemoteBranchNameByCommitFirstTime(commit)} {commit.message}'
 
