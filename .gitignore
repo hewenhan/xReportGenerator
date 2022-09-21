@@ -2,3 +2,4 @@ config/config.json
 output
 .vscode
 *.log
+__pycache__

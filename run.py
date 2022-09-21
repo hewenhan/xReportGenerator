@@ -61,8 +61,12 @@ def getGitCommitTextByDateRange(repo, branches, repoName = ''):
 
 	commits = list(repo.iter_commits(branches, since=config['afterDate'], committer=config['committerName']))
 	commits.reverse()
+	idx = 1
 	for commit in commits:
-		result += f'{repoName} {getRemoteBranchNameByCommitFirstTime(commit)} {commit.message}'
+		# if idx == 1:
+		# 	result += f'{repoName}\n'
+		result += f'{getRemoteBranchNameByCommitFirstTime(commit)} {commit.message}'
+		idx += 1
 
 	printLog(f'reading {repoName} commits done')
 
@@ -80,6 +84,8 @@ def insertGitsCommitsTextIntoTemplate(gitsCommitsText):
 	template.close()
 	printLog('inserting gits commits text into template done')
 
+romanNumList = ['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ', 'Ⅸ', 'Ⅹ', 'Ⅺ', 'Ⅻ']
+
 def main():
 	printLog('start')
 
@@ -87,14 +93,20 @@ def main():
 	clearCacheDir()
 
 	gitsCommitsText = ''
+	idx = 1
 	# 遍历 config['gitUrls'] 下所有分支
 	for gitConfig in config['gitUrls']:
 		repo = getGitCommitTextByUserDateRange(gitConfig)
 		branches = getGitBranches(repo, gitConfig['name'])
+
+		gitsCommitsText += f'{romanNumList[idx - 1]}. {gitConfig["name"]}\n'
 		commitsText = getGitCommitTextByDateRange(repo, branches, gitConfig['name'])
 		gitsCommitsText += commitsText
 		repo.close()
 		shutil.rmtree(repo.working_tree_dir)
+		idx += 1
+
+	gitsCommitsText = gitsCommitsText[:-1]
 
 	# 将 gitsCommitsText 插入文本模板中
 	insertGitsCommitsTextIntoTemplate(gitsCommitsText)
